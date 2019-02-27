@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+import com.example.administrator.myapplication.util.Record;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -21,6 +22,7 @@ import java.util.Objects;
 public class HistoryFragment extends Fragment implements AdapterView.OnItemClickListener {
     private Context mContext;
     private LinkedList<RecordItem> mData;
+    Record record;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,8 +41,7 @@ public class HistoryFragment extends Fragment implements AdapterView.OnItemClick
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent start_intent = new Intent();
         start_intent.setClass(Objects.requireNonNull(getActivity()).getApplicationContext(), HistoryActivity.class);
-        start_intent.putExtra("date", mData.get(position).date.getTime());
-        Toast.makeText(mContext, "你点击了第" + position + "项", Toast.LENGTH_SHORT).show();
+        start_intent.putExtra("record", record);
         startActivity(start_intent);
     }
 }

@@ -8,10 +8,11 @@
         android:id="@+id/txt_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/message"
+        android:text="@string/tab_menu_record"
         android:textColor="@color/text_yellow"
         android:textSize="20sp" />
-    <com.example.administrator.myapplication.MyView
+
+    <com.example.administrator.myapplication.BeatView
         android:id="@+id/draw_content"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />

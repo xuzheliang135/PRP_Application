@@ -18,7 +18,7 @@
             android:gravity="center"
             android:textSize="18sp"
             android:textColor="@color/text_topbar"
-            android:text="@string/tab_menu_profile"/>
+            android:text="@string/tab_menu_history" />
 
 
         <View
@@ -40,25 +40,19 @@
         android:orientation="horizontal">
 
         <RadioButton
-            android:id="@+id/rb_channel"
+            android:id="@+id/rb_record"
             style="@style/tab_menu_item"
             android:drawableTop="@drawable/tab_menu_channel"
-            android:text="@string/tab_menu_alert" />
+            android:text="@string/tab_menu_record" />
 
         <RadioButton
-            android:id="@+id/rb_message"
-            style="@style/tab_menu_item"
-            android:drawableTop="@drawable/tab_menu_message"
-            android:text="@string/tab_menu_profile" />
-
-        <RadioButton
-            android:id="@+id/rb_better"
+            android:id="@+id/rb_history"
             style="@style/tab_menu_item"
             android:drawableTop="@drawable/tab_menu_better"
-            android:text="@string/tab_menu_pay" />
+            android:text="@string/tab_menu_history" />
 
         <RadioButton
-            android:id="@+id/rb_setting"
+            android:id="@+id/rb_settings"
             style="@style/tab_menu_item"
             android:drawableTop="@drawable/tab_menu_setting"
             android:text="@string/tab_menu_setting"/>

@@ -2,7 +2,7 @@
 <resources>
     <color name="bg_black">#000000</color>
     <color name="white">#FFFFFF</color>
-    <color name="bg_topbar">#FCFCFC</color>
+    <color name="bg_topbar">#FFFFFF</color>
 
     <color name="bg_gray">#00F1F1F1</color>
     <color name="transparent">#00FFFFFF</color>
@@ -17,6 +17,9 @@
     <color name="div_white">#E5E5E5</color>
 
     <color name="blue">#FF3B1AF2</color>
+    <color name="border_clo">#ccc</color>
+    <color name="gray">#807d7d</color>
+    <color name="text_clo">#333</color>
 
 
 

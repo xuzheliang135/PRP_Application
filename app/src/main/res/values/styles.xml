@@ -10,6 +10,18 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="base_layout">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+    </style>
     <style name="tab_menu_item">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
@@ -20,6 +32,37 @@
         <item name="android:paddingTop">3dp</item>
         <item name="android:textColor">@drawable/tab_menu_text</item>
         <item name="android:textSize">18sp</item>
+    </style>
+    <!-- 全圆角样式 -->
+    <style name="single_layout" parent="base_layout">
+        <item name="android:background">@drawable/single_layout_selector</item>
+    </style>
+    <!-- 文本右边箭头样式 -->
+    <style name="img_arrow">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:src">@drawable/setting_arrow_right</item>
+
+    </style>
+    <!-- textview样式 -->
+    <style name="usertext">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/text_clo</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+    <!-- 最外层样式 -->
+    <style name="wrap_layout">
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:padding">1px</item>
+        <item name="android:background">@drawable/bg_layout_shape</item>
+
     </style>
 
 
