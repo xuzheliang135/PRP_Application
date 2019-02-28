@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import com.example.administrator.myapplication.util.BeatImage;
 import com.example.administrator.myapplication.util.Record;
@@ -12,10 +13,11 @@ import com.example.administrator.myapplication.util.Record;
 import java.util.LinkedList;
 
 
-public class BeatView extends View {
+public class BeatView extends View implements View.OnTouchListener {
 
     private BeatImage beatImage;
     private int width, height;
+    private float lastX;
 
     public BeatView(Context context) {
         super(context);
@@ -34,6 +36,7 @@ public class BeatView extends View {
 
     private void init() {
         beatImage = new BeatImage(100, 100, new Record());
+        setOnTouchListener(this);
     }
 
     public BeatImage getModel() {
@@ -56,4 +59,21 @@ public class BeatView extends View {
         this.invalidate();
     }
 
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if (v.getId() == R.id.draw_content) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    lastX = event.getX();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    int newStartIndex = (int) (beatImage.getStartIndex() - (event.getX() - lastX));
+                    beatImage.setStartIndex(newStartIndex);
+                    lastX = event.getX();
+                    break;
+            }
+
+        }
+        return true;
+    }
 }

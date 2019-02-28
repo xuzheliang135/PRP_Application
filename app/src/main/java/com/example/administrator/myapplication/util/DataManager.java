@@ -1,7 +1,5 @@
 package com.example.administrator.myapplication.util;
 
-import android.util.Log;
-
 import java.util.LinkedList;
 
 public class DataManager {
@@ -39,7 +37,7 @@ public class DataManager {
     }
 
     synchronized boolean isReady() {
-        return frames.size() != 0;
+        return frames.size() > 1;//todo: fix when size is 1,removeFirst() throw exception
     }
 
     private synchronized DataFrame getOneFrame() {
@@ -75,8 +73,7 @@ public class DataManager {
 
     synchronized DataFrame getFrame() {
         if (!isReady()) return null;
-        Log.d("my_debug", "size:" + frames.size());
-        return frames.removeFirst();
+        else return frames.removeFirst();
     }
 
     synchronized LinkedList<DataFrame> getFrames() {
@@ -85,5 +82,10 @@ public class DataManager {
 
     public synchronized LinkedList<Byte> getData() {
         return data;
+    }
+
+    public void clearAll() {
+        data.clear();
+        frames.clear();
     }
 }

@@ -5,16 +5,16 @@ import java.util.Date;
 import java.util.LinkedList;
 
 public class Record implements Serializable {
-    long date;
+    private long date;
     private String date_str;
-    LinkedList<Integer> points;
+    private LinkedList<Integer> points;
 
     public Record() {
         date = new Date().getTime();
         points = new LinkedList<Integer>();
     }
 
-    public void append_points(int value) {
+    synchronized void append_points(int value) {
         points.add(value);
     }
 
@@ -38,7 +38,7 @@ public class Record implements Serializable {
         this.points = points;
     }
 
-    public LinkedList<Integer> getPoints() {
+    synchronized LinkedList<Integer> getPoints() {
         return points;
     }
 }

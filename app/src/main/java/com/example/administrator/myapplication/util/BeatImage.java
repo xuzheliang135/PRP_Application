@@ -3,6 +3,7 @@ package com.example.administrator.myapplication.util;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.util.Log;
 
 import java.util.LinkedList;
 
@@ -13,7 +14,7 @@ public class BeatImage {
     private int width;
     private int height;
     private int startIndex;
-    int showLenght = 40;
+    private int showLenght = 70;
 
     public BeatImage(int width, int height, Record record) {
         this.height = height;
@@ -23,8 +24,8 @@ public class BeatImage {
     }
 
     private void init() {
-        paths = new LinkedList<Path>();
-        paints = new LinkedList<Paint>();
+        paths = new LinkedList<>();
+        paints = new LinkedList<>();
         Paint back_paint = new Paint();
         Paint data_paint = new Paint();
 
@@ -64,6 +65,10 @@ public class BeatImage {
         paths.addFirst(v_path);
     }
 
+    private synchronized void onSizeChanged() {
+        updateBackPath();
+        showLenght = width / 10;
+    }
     private synchronized void updateBackPath() {
         paths.remove();
         paths.remove();
@@ -71,36 +76,38 @@ public class BeatImage {
     }
 
     public synchronized void setWidth(int width) {
-        this.width = width;
+        setSize(width, height);
         updateBackPath();
     }
 
     public synchronized void setHeight(int height) {
-        this.height = height;
+        setSize(width, height);
         updateBackPath();
     }
 
     public synchronized void setSize(int width, int height) {
         this.height = height;
         this.width = width;
-        updateBackPath();
+        onSizeChanged();
     }
 
     public synchronized void setStartIndex(int startIndex) {
-        this.startIndex = startIndex;
+        int length = record.getPoints().size();
+        startIndex = startIndex < length ? startIndex : length;
+        this.startIndex = startIndex > 0 ? startIndex : 0;
+        updateDataPath();
     }
 
-
-    public Record getRecord() {
-        return record;
+    public synchronized int getStartIndex() {
+        return startIndex;
     }
 
-    public synchronized void setRecord(Record record) {
+    synchronized void setRecord(Record record) {
         this.record = record;
         updateDataPath();
     }
 
-    public LinkedList<Path> getPaths() {
+    public synchronized LinkedList<Path> getPaths() {
         return paths;
     }
 
@@ -120,10 +127,16 @@ public class BeatImage {
         paths.add(d_path);
     }
 
-    public synchronized void append(int value) {
+    synchronized void append(int value) {//todo: limit the value:to large value can break the drawing function
         record.append_points(value);
         if (record.getPoints().size() > showLenght) startIndex += 1;
+        Log.d("my_debug", "recordSize" + record.getPoints().size());
         updateDataPath();
     }
 
+    public void clearAll() {
+        record.getPoints().clear();
+        init();
+        startIndex = 0;
+    }
 }

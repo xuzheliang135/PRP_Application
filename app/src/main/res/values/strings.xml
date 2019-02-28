@@ -10,6 +10,8 @@
     <string name="tab_menu_setting">设置</string>
     <string name="none">未知</string>
     <string name="about">关于</string>
+    <string name="start">开始</string>
+    <string name="terminate">结束</string>
 
 
 </resources>
