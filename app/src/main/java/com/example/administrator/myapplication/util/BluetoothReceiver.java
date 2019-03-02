@@ -53,7 +53,7 @@ public class BluetoothReceiver extends BroadcastReceiver {
             out.write(end_command);
             out.close();
             in.close();
-            //todo save record
+            beatImage.save();
         } catch (IOException e) {
             Log.d("my_debug", "error:" + e.getMessage());
             startRecord();
@@ -67,7 +67,6 @@ public class BluetoothReceiver extends BroadcastReceiver {
 
     private synchronized void startRecord() {
         isRunning = true;
-//        beatImage.clearAll();
         new Thread() {
             @Override
             public void run() {

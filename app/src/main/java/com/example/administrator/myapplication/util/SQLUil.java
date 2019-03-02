@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.LinkedList;
-import java.util.List;
 
 
 public class SQLUil {
@@ -50,8 +49,8 @@ public class SQLUil {
     }
 
     //获取Record list
-    public List<Record> get_record_list() {
-        List<Record> record_list = new LinkedList<Record>();
+    public LinkedList<Record> get_record_list() {
+        LinkedList<Record> record_list = new LinkedList<Record>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query("points", null, null, null, null, null, null);//
         if (cursor.getCount() > 0) {
@@ -74,7 +73,7 @@ public class SQLUil {
     void record(Record record) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String sql = "insert into points(date,y,position) values(?,?,?)";
-        for (int j = 0; j <= record.getPoints().size(); j++) {
+        for (int j = 0; j < record.getPoints().size(); j++) {
             Object[] obj = {record.getDate(), record.getPoints().get(j), j};
             db.execSQL(sql, obj);
         }

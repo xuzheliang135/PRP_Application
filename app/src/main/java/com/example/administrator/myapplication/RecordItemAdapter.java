@@ -6,15 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import com.example.administrator.myapplication.util.Record;
 
 import java.util.List;
 
 public class RecordItemAdapter extends BaseAdapter {
 
-    private List<RecordItem> mData;
+    private List<Record> mData;
     private Context mContext;
 
-    public RecordItemAdapter(List<RecordItem> mData, Context mContext) {
+    public RecordItemAdapter(List<Record> mData, Context mContext) {
         this.mData = mData;
         this.mContext = mContext;
     }
@@ -41,19 +42,16 @@ public class RecordItemAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.recoed_item, parent, false);
             viewHolder = new ViewHolder();
             viewHolder.date = convertView.findViewById(R.id.date);
-            viewHolder.beats_per_minute = convertView.findViewById(R.id.beats_per_minute);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.date.setText(mData.get(position).get_date());
-        viewHolder.beats_per_minute.setText(mData.get(position).get_beats());
+        viewHolder.date.setText(mData.get(position).getDate_str());
         return convertView;
     }
 
     private class ViewHolder {
         TextView date;
-        TextView beats_per_minute;
     }
 
 }

@@ -8,7 +8,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import com.example.administrator.myapplication.util.BeatImage;
-import com.example.administrator.myapplication.util.Record;
 
 import java.util.LinkedList;
 
@@ -35,7 +34,7 @@ public class BeatView extends View implements View.OnTouchListener {
     }
 
     private void init() {
-        beatImage = new BeatImage(100, 100, new Record());
+        beatImage = new BeatImage(100, 100, getContext());
         setOnTouchListener(this);
     }
 

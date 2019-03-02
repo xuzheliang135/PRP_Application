@@ -5,11 +5,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.example.administrator.myapplication.util.Record;
+import com.example.administrator.myapplication.util.SQLUil;
 
 public class HistoryActivity extends AppCompatActivity implements View.OnClickListener {
     long date;
-    int beats_per_minute;
     Record record;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,9 +18,13 @@ public class HistoryActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_history);
         findViewById(R.id.ret).setOnClickListener(this);
         Intent intent = getIntent();
-        record = (Record) intent.getSerializableExtra("record");
+        date = intent.getLongExtra("date", -1);
+        if (date == -1) Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_LONG).show();
+        record = new SQLUil(getApplicationContext()).get_record(date);
+
         TextView date = findViewById(R.id.date);
-        TextView beats_per_minute = findViewById(R.id.beats_per_minute);
+        date.setText(record.getDate_str());
+        ((BeatView) findViewById(R.id.draw_content)).getModel().setRecord(record);
     }
 
     @Override

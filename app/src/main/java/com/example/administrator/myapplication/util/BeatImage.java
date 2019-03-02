@@ -1,5 +1,6 @@
 package com.example.administrator.myapplication.util;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -14,12 +15,14 @@ public class BeatImage {
     private int width;
     private int height;
     private int startIndex;
-    private int showLenght = 70;
+    private int showLength = 70;
+    private SQLUil sqlUil;
 
-    public BeatImage(int width, int height, Record record) {
+    public BeatImage(int width, int height, Context mContext) {
         this.height = height;
         this.width = width;
-        this.record = record;
+        this.record = new Record();
+        sqlUil = new SQLUil(mContext);
         init();
     }
 
@@ -46,6 +49,10 @@ public class BeatImage {
         addDataPath();
     }
 
+    public void save() {
+        sqlUil.record(record);
+    }
+
     public LinkedList<Paint> getPaints() {
         return paints;
     }
@@ -67,8 +74,9 @@ public class BeatImage {
 
     private synchronized void onSizeChanged() {
         updateBackPath();
-        showLenght = width / 10;
+        showLength = width / 10;
     }
+
     private synchronized void updateBackPath() {
         paths.remove();
         paths.remove();
@@ -102,7 +110,7 @@ public class BeatImage {
         return startIndex;
     }
 
-    synchronized void setRecord(Record record) {
+    public synchronized void setRecord(Record record) {
         this.record = record;
         updateDataPath();
     }
@@ -121,7 +129,7 @@ public class BeatImage {
         int zero_y = height / 2;
         Path d_path = new Path();
         d_path.moveTo(0, zero_y);
-        for (int i = 0; i < Math.min(points.size() - startIndex, showLenght); i++) {
+        for (int i = 0; i < Math.min(points.size() - startIndex, showLength); i++) {
             d_path.lineTo(i * 10, zero_y - points.get(startIndex + i));
         }
         paths.add(d_path);
@@ -129,7 +137,7 @@ public class BeatImage {
 
     synchronized void append(int value) {//todo: limit the value:to large value can break the drawing function
         record.append_points(value);
-        if (record.getPoints().size() > showLenght) startIndex += 1;
+        if (record.getPoints().size() > showLength) startIndex += 1;
         Log.d("my_debug", "recordSize" + record.getPoints().size());
         updateDataPath();
     }
