@@ -24,7 +24,7 @@ public class HistoryActivity extends AppCompatActivity implements View.OnClickLi
 
         TextView date = findViewById(R.id.date);
         date.setText(record.getDate_str());
-        ((BeatView) findViewById(R.id.draw_content)).getModel().setRecord(record);
+        ((BeatView) findViewById(R.id.imageView)).getModel().setRecord(record);
     }
 
     @Override

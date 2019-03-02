@@ -26,7 +26,6 @@ public class HistoryFragment extends Fragment implements AdapterView.OnItemClick
         ListView list = view.findViewById(R.id.list_record);
         mContext = view.getContext();
         mData = new SQLUil(mContext).get_record_list();
-//        mData.sort();
         RecordItemAdapter mAdapter = new RecordItemAdapter(mData, mContext);
         list.setAdapter(mAdapter);
         list.setOnItemClickListener(this);

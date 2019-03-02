@@ -48,6 +48,7 @@ public class DataManager {
             if (data.size() < frameLength + 2) return null;
             int index = data.indexOf(end_1);
             for (int i = 0; i < index; i++) data.removeFirst();
+            if (data.size() < frameLength + 2) return null;
             if (data.get(1) != end_2
                     || data.get(frameLength) != end_1
                     || data.get(frameLength + 1) != end_2) {

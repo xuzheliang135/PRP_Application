@@ -12,9 +12,9 @@ public class Record implements Serializable {
     private long date;
     private String date_str;
     private LinkedList<Integer> points;
-    private DateFormat dateFormat = new SimpleDateFormat("MM/dd hh:mm", Locale.getDefault());
+    private DateFormat dateFormat = new SimpleDateFormat("MM/dd hh:mm:ss", Locale.getDefault());
 
-    public Record() {
+    Record() {
         Date nowDate = new Date();
         date = nowDate.getTime();
         date_str = dateFormat.format(nowDate);

@@ -34,16 +34,17 @@ public class SQLUil {
     }
 
     //从数据库生成record对象,（在获取Record List时内部调用）
-    public Record get_record(long Date) {
+    public Record get_record(long date) {
         Record data = new Record();
+        data.setDate(date);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor c = db.rawQuery("select y,postion from points where date=Date", null);
+        Cursor c = db.rawQuery("select y,position from points where date=" + date, null);
         if (c.getCount() > 0) {
             while (c.moveToNext()) {
                 // 将点加入记录
                 data.getPoints().add(c.getInt(c.getColumnIndex("position")), c.getInt(c.getColumnIndex("y")));
-                c.close();
             }
+            c.close();
         }
         return data;
     }
@@ -52,13 +53,13 @@ public class SQLUil {
     public LinkedList<Record> get_record_list() {
         LinkedList<Record> record_list = new LinkedList<Record>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query("points", null, null, null, null, null, null);//
+        Cursor cursor = db.query("points", null, null, null, null, null, null);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             long Date = cursor.getLong(cursor.getColumnIndex("date"));
             record_list.add(get_record(Date));
             while (cursor.moveToNext()) {
-                while (cursor.isLast() == false & (Date == cursor.getLong(cursor.getColumnIndex("date")))) {
+                while (cursor.isLast() == false && (Date == cursor.getLong(cursor.getColumnIndex("date")))) {
                     cursor.moveToNext();
                 }
                 Date = cursor.getLong(cursor.getColumnIndex("date"));
@@ -77,6 +78,6 @@ public class SQLUil {
             Object[] obj = {record.getDate(), record.getPoints().get(j), j};
             db.execSQL(sql, obj);
         }
-        db.close();
+//        db.close();
     }
 }
