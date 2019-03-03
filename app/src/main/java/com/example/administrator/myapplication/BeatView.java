@@ -15,7 +15,7 @@ import java.util.LinkedList;
 public class BeatView extends View implements View.OnTouchListener {
 
     private BeatImage beatImage;
-    private int width, height;
+    private int width = 100, height = 100;
     private float lastX;
 
     public BeatView(Context context) {
@@ -60,7 +60,7 @@ public class BeatView extends View implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (v.getId() == R.id.draw_content) {
+        if (v.getId() == R.id.draw_content || v.getId() == R.id.imageView) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     lastX = event.getX();

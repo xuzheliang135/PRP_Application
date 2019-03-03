@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
                 break;
             case R.id.rb_history:
                 title_text.setText(R.string.tab_menu_history);
-
+                ((HistoryFragment) fg[1]).refreshList();
                 fTransaction.show(fg[1]);
                 break;
             case R.id.rb_settings:

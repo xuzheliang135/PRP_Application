@@ -12,7 +12,7 @@ public class Record implements Serializable {
     private long date;
     private String date_str;
     private LinkedList<Integer> points;
-    private DateFormat dateFormat = new SimpleDateFormat("MM/dd hh:mm:ss", Locale.getDefault());
+    static private DateFormat dateFormat = new SimpleDateFormat("MM/dd hh:mm:ss", Locale.getDefault());
 
     Record() {
         Date nowDate = new Date();
@@ -31,7 +31,7 @@ public class Record implements Serializable {
 
     public void setDate(long date) {
         this.date = date;
-        date_str = dateFormat.format(new Date(date));
+        date_str = format(date);
     }
 
     public void setPoints(LinkedList<Integer> points) {
@@ -40,6 +40,11 @@ public class Record implements Serializable {
 
     public String getDate_str() {
         return date_str;
+    }
+
+    static public String format(long date) {
+        return dateFormat.format(new Date(date));
+
     }
 
     synchronized LinkedList<Integer> getPoints() {

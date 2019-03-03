@@ -85,7 +85,6 @@ public class BluetoothReceiver extends BroadcastReceiver {
             btSocket = device.createRfcommSocketToServiceRecord(MY_UUID);
             btSocket.connect();
             startRecord();
-            Log.d("my_debug", "." + btSocket.isConnected());
         } catch (IOException e) {
             Log.d("my_debug", "error:" + e.getMessage());
         }

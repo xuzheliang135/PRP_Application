@@ -55,21 +55,32 @@ public class SQLUil {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query("points", null, null, null, null, null, null);
         if (cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            long Date = cursor.getLong(cursor.getColumnIndex("date"));
-            record_list.add(get_record(Date));
-            while (cursor.moveToNext()) {
-                while (cursor.isLast() == false && (Date == cursor.getLong(cursor.getColumnIndex("date")))) {
-                    cursor.moveToNext();
-                }
-                Date = cursor.getLong(cursor.getColumnIndex("date"));
+            cursor.moveToLast();
+            while (cursor.moveToPrevious()) {
+                long Date = cursor.getLong(cursor.getColumnIndex("date"));
                 record_list.add(get_record(Date));
+                while (!cursor.isFirst() && (Date == cursor.getLong(cursor.getColumnIndex("date")))) {
+                    cursor.moveToPrevious();
+                }
             }
         }
         cursor.close();
         return record_list;
     }
 
+    public LinkedList<Long> get_date_list() {
+        LinkedList<Long> record_list = new LinkedList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select distinct date from points order by date desc", null);
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                long Date = cursor.getLong(cursor.getColumnIndex("date"));
+                record_list.add(Date);
+            }
+        }
+        cursor.close();
+        return record_list;
+    }
     //从Record写入数据库
     void record(Record record) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();

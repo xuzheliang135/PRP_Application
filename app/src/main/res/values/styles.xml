@@ -35,7 +35,7 @@
     </style>
     <!-- 全圆角样式 -->
     <style name="single_layout" parent="base_layout">
-        <item name="android:background">@drawable/single_layout_selector</item>
+        <item name="android:background">@drawable/single_layout_selector_round</item>
     </style>
     <!-- 文本右边箭头样式 -->
     <style name="img_arrow">

@@ -73,8 +73,9 @@ public class BeatImage {
     }
 
     private synchronized void onSizeChanged() {
-        updateBackPath();
         showLength = width / 10;
+        updateBackPath();
+        updateDataPath();
     }
 
     private synchronized void updateBackPath() {

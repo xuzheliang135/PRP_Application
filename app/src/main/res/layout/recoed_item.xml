@@ -3,14 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@drawable/single_layout_selector">
 
     <TextView
         android:id="@+id/date"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:textSize="20sp"
+        android:textSize="40sp"
         android:textColor="@color/bg_black" />
 
 

@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/bg_white">
 
     <ListView
         android:id="@+id/list_record"
@@ -11,6 +12,7 @@
         android:layout_alignParentStart="true"
         android:fastScrollEnabled="true"
         android:background="@color/white"
-        android:divider="@color/bg_black"
+        android:divider="@color/gray"
+        android:dividerHeight="1dp"
         android:cacheColorHint="@color/transparent"/>
 </RelativeLayout>

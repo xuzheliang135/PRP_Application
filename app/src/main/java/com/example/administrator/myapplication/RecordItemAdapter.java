@@ -8,21 +8,22 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.example.administrator.myapplication.util.Record;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class RecordItemAdapter extends BaseAdapter {
 
-    private List<Record> mData;
+    private List<Long> data;
     private Context mContext;
 
-    public RecordItemAdapter(List<Record> mData, Context mContext) {
-        this.mData = mData;
+    public RecordItemAdapter(List<Long> data, Context mContext) {
+        this.data = data;
         this.mContext = mContext;
     }
 
     @Override
     public int getCount() {
-        return mData.size();
+        return data.size();
     }
 
     @Override
@@ -35,6 +36,9 @@ public class RecordItemAdapter extends BaseAdapter {
         return position;
     }
 
+    public void setData(LinkedList<Long> date) {
+        data = date;
+    }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
@@ -46,7 +50,7 @@ public class RecordItemAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.date.setText(mData.get(position).getDate_str());
+        viewHolder.date.setText(Record.format(data.get(position)));
         return convertView;
     }
 
