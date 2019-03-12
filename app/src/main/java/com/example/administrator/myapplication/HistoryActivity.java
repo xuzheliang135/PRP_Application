@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.administrator.myapplication.util.Record;
-import com.example.administrator.myapplication.util.SQLUil;
+import com.example.administrator.myapplication.util.SQLUtil;
 
 public class HistoryActivity extends AppCompatActivity implements View.OnClickListener {
     long date;
@@ -20,7 +20,7 @@ public class HistoryActivity extends AppCompatActivity implements View.OnClickLi
         Intent intent = getIntent();
         date = intent.getLongExtra("date", -1);
         if (date == -1) Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_LONG).show();
-        record = new SQLUil(getApplicationContext()).get_record(date);
+        record = new SQLUtil(getApplicationContext()).get_record(date);
 
         TextView date = findViewById(R.id.date);
         date.setText(record.getDate_str());

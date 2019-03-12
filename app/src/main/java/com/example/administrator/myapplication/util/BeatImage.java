@@ -16,13 +16,13 @@ public class BeatImage {
     private int height;
     private int startIndex;
     private int showLength = 70;
-    private SQLUil sqlUil;
+    private SQLUtil sqlUtil;
 
     public BeatImage(int width, int height, Context mContext) {
         this.height = height;
         this.width = width;
         this.record = new Record();
-        sqlUil = new SQLUil(mContext);
+        sqlUtil = new SQLUtil(mContext);
         init();
     }
 
@@ -49,8 +49,8 @@ public class BeatImage {
         addDataPath();
     }
 
-    public void save() {
-        sqlUil.record(record);
+    void save() {
+        sqlUtil.record(record);
     }
 
     public LinkedList<Paint> getPaints() {

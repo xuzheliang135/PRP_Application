@@ -8,8 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.LinkedList;
 
 
-public class SQLUil {
-    public SQLUil(Context context) {
+public class SQLUtil {
+    public SQLUtil(Context context) {
         dbHelper = new DBHelper(context.getApplicationContext());
     }
 
