@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import com.example.administrator.myapplication.util.SQLUil;
+import com.example.administrator.myapplication.util.SQLUtil;
 
 import java.util.LinkedList;
 import java.util.Objects;
@@ -25,7 +25,7 @@ public class HistoryFragment extends Fragment implements AdapterView.OnItemClick
         View view = inflater.inflate(R.layout.fg_history, container, false);
         ListView list = view.findViewById(R.id.list_record);
         mContext = view.getContext();
-        mData = new SQLUil(mContext).get_date_list();
+        mData = new SQLUtil(mContext).get_date_list();
         mAdapter = new RecordItemAdapter(mData, mContext);
         list.setAdapter(mAdapter);
         list.setOnItemClickListener(this);
@@ -33,7 +33,7 @@ public class HistoryFragment extends Fragment implements AdapterView.OnItemClick
     }
 
     void refreshList() {
-        mAdapter.setData(new SQLUil(mContext).get_date_list());
+        mAdapter.setData(new SQLUtil(mContext).get_date_list());
     }
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
