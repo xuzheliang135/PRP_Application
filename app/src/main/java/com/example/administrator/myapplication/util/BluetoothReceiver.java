@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 import com.example.administrator.myapplication.BeatView;
+import com.example.administrator.myapplication.Config;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +20,7 @@ public class BluetoothReceiver extends BroadcastReceiver {
     private final UUID MY_UUID =
             UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private BluetoothSocket btSocket;
-    private DataManager dataManager = new DataManager();//todo:reconstruct DataManager as a factory
+    private DataManager dataManager = new DataManager();//todo:refactor DataManager as a factory
     private BeatImage beatImage;
     private boolean isRunning = false;
 
@@ -41,12 +42,14 @@ public class BluetoothReceiver extends BroadcastReceiver {
             InputStream in = btSocket.getInputStream();
             byte[] buf = new byte[64];
             DataFrame frame;
+            int[] channelValue = new int[4];
             while (isRunning()) {
                 int len = in.read(buf);
                 dataManager.append(buf, len);
                 if (dataManager.isReady()) {
                     frame = dataManager.getFrame();
-                    beatImage.append((int) (frame.getChannelData(2)));
+                    for (int i = 0; i < Config.channelNumber; i++) channelValue[i] = (int) frame.getChannelData(i);
+                    beatImage.append(channelValue);
                 }
             }
             dataManager.clearAll();

@@ -1,6 +1,8 @@
 package com.example.administrator.myapplication.util;
 
 
+import com.example.administrator.myapplication.Config;
+
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -11,18 +13,22 @@ import java.util.Locale;
 public class Record implements Serializable {
     private long date;
     private String date_str;
-    private LinkedList<Integer> points;
+    private LinkedList<LinkedList<Integer>> pointsList;
     static private DateFormat dateFormat = new SimpleDateFormat("MM/dd hh:mm:ss", Locale.getDefault());
 
     Record() {
         Date nowDate = new Date();
         date = nowDate.getTime();
         date_str = dateFormat.format(nowDate);
-        points = new LinkedList<Integer>();
+        //四通道数据
+        for (int i = 0; i < Config.channelNumber; i++) {
+            pointsList.add(new LinkedList<Integer>());
+        }
     }
 
-    synchronized void append_points(int value) {
-        points.add(value);
+    //输入通道序号存入点
+    synchronized void append_points(int ch, int value) {
+        pointsList.get(ch).add(value);
     }
 
     public long getDate() {
@@ -34,8 +40,8 @@ public class Record implements Serializable {
         date_str = format(date);
     }
 
-    public void setPoints(LinkedList<Integer> points) {
-        this.points = points;
+    public void setPoints(int ch, LinkedList<Integer> points) {
+        pointsList.set(ch, points);
     }
 
     public String getDate_str() {
@@ -47,7 +53,7 @@ public class Record implements Serializable {
 
     }
 
-    synchronized LinkedList<Integer> getPoints() {
-        return points;
+    synchronized LinkedList<Integer> getPoints(int ch) {
+        return pointsList.get(ch);
     }
 }

@@ -32,11 +32,11 @@ public class BeatFragment extends Fragment implements View.OnClickListener {
         controlButton = view.findViewById(R.id.controlButton);
         bluetoothReceiver = new BluetoothReceiver((BeatView) view.findViewById(R.id.draw_content));
         controlButton.setOnClickListener(this);
-        init();
+        createFilter();
         return view;
     }
 
-    private void init() {//todo:change the name
+    private void createFilter() {
         bluetoothFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         bluetoothFilter.addAction(BluetoothDevice.ACTION_FOUND);
         bluetoothFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);

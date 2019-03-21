@@ -16,10 +16,10 @@ public class SQLUtil {
     private DBHelper dbHelper;
 
     //向第二张表中添加数据（备用）
-    public void insert_points(long date, int y, int position) {
+    public void insert_points(long date, int ch, int y, int position) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String sql = "insert into insert_points(date,y,position) values(?,?,?)";
-        Object[] obj = {date, y, position};
+        String sql = "insert into insert_points(date,ch,y,position) values(?,?,?,?)";
+        Object[] obj = {date, ch, y, position};
         db.execSQL(sql, obj);
         db.close();
     }
@@ -38,13 +38,15 @@ public class SQLUtil {
         Record data = new Record();
         data.setDate(date);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor c = db.rawQuery("select y,position from points where date=" + date, null);
-        if (c.getCount() > 0) {
-            while (c.moveToNext()) {
-                // 将点加入记录
-                data.getPoints().add(c.getInt(c.getColumnIndex("position")), c.getInt(c.getColumnIndex("y")));
+        for (int i = 0; i < 4; i++) {
+            Cursor c = db.rawQuery("select y,position from points where date=" + date + "&ch=" + i, null);
+            if (c.getCount() > 0) {
+                while (c.moveToNext()) {
+                    // 将点加入记录
+                    data.getPoints(i).add(c.getInt(c.getColumnIndex("position")), c.getInt(c.getColumnIndex("y")));
+                }
+                c.close();
             }
-            c.close();
         }
         return data;
     }
@@ -81,13 +83,16 @@ public class SQLUtil {
         cursor.close();
         return record_list;
     }
+
     //从Record写入数据库
     void record(Record record) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String sql = "insert into points(date,y,position) values(?,?,?)";
-        for (int j = 0; j < record.getPoints().size(); j++) {
-            Object[] obj = {record.getDate(), record.getPoints().get(j), j};
-            db.execSQL(sql, obj);
+        String sql = "insert into points(date,ch,y,position) values(?,?,?,?)";
+        for (int k = 0; k < 4; k++) {
+            for (int j = 0; j < record.getPoints(k).size(); j++) {
+                Object[] obj = {record.getDate(), k, record.getPoints(k).get(j), j};
+                db.execSQL(sql, obj);
+            }
         }
 //        db.close();
     }

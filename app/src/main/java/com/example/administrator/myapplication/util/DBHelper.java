@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
     //数据库的名字
     private static final String DB_NAME = "BeatData.db";
-    private static final String CREATE_TBL1 = " create table if not exists" + " points(_id integer primary key autoincrement,date,y,position)";
+    private static final String CREATE_TBL1 = " create table if not exists" + " points(_id integer primary key autoincrement,date,ch,y,position)";
 
     //创建数据库
     DBHelper(Context context) {

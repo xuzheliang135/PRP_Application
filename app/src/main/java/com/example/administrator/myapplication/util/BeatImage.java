@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.Log;
+import com.example.administrator.myapplication.Config;
 
 import java.util.LinkedList;
 
@@ -16,6 +17,7 @@ public class BeatImage {
     private int height;
     private int startIndex;
     private int showLength = 70;
+    private static final int signalMAX = 1200;
     private SQLUtil sqlUtil;
 
     public BeatImage(int width, int height, Context mContext) {
@@ -44,7 +46,9 @@ public class BeatImage {
 
         paints.add(back_paint);
         paints.add(back_paint);
-        paints.add(data_paint);
+        for (int i = 0; i < Config.channelNumber; i++) {
+            paints.add(data_paint);
+        }
         addBackPath();
         addDataPath();
     }
@@ -101,7 +105,7 @@ public class BeatImage {
     }
 
     public synchronized void setStartIndex(int startIndex) {
-        int length = record.getPoints().size();
+        int length = record.getPoints(0).size();
         startIndex = startIndex < length ? startIndex : length;
         this.startIndex = startIndex > 0 ? startIndex : 0;
         updateDataPath();
@@ -126,25 +130,28 @@ public class BeatImage {
     }
 
     private synchronized void addDataPath() {
-        LinkedList<Integer> points = record.getPoints();
-        int zero_y = height / 2;
-        Path d_path = new Path();
-        d_path.moveTo(0, zero_y);
-        for (int i = 0; i < Math.min(points.size() - startIndex, showLength); i++) {
-            d_path.lineTo(i * 10, zero_y - points.get(startIndex + i));
+        final int channelHeight = height / Config.channelNumber;
+        for (int i = 0; i < Config.channelNumber; i++) {
+            LinkedList<Integer> points = record.getPoints(i);
+            int zero_y = channelHeight / 2 + i * channelHeight;
+            Path d_path = new Path();
+            d_path.moveTo(0, zero_y);
+            for (int j = 0; j < Math.min(points.size() - startIndex, showLength); j++) {
+                d_path.lineTo(j * 10, zero_y - (points.get(startIndex + j) * channelHeight / signalMAX));
+            }
+            paths.add(d_path);
         }
-        paths.add(d_path);
     }
 
-    synchronized void append(int value) {//todo: limit the value:to large value can break the drawing function
-        record.append_points(value);
-        if (record.getPoints().size() > showLength) startIndex += 1;
-        Log.d("my_debug", "recordSize" + record.getPoints().size());
+    synchronized void append(int[] value) {//todo: limit the value:to large value can break the drawing function
+        for (int i = 0; i < Config.channelNumber; i++) record.append_points(i, value[i]);
+        if (record.getPoints(0).size() > showLength) startIndex += 1;
+        Log.d("my_debug", "recordSize" + record.getPoints(0).size());
         updateDataPath();
     }
 
     public void clearAll() {
-        record.getPoints().clear();
+        for (int i = 0; i < Config.channelNumber; i++) record.getPoints(i).clear();
         init();
         startIndex = 0;
     }
