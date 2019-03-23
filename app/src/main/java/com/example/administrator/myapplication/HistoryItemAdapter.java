@@ -11,12 +11,12 @@ import com.example.administrator.myapplication.util.Record;
 import java.util.LinkedList;
 import java.util.List;
 
-public class RecordItemAdapter extends BaseAdapter {
+public class HistoryItemAdapter extends BaseAdapter {
 
     private List<Long> data;
     private Context mContext;
 
-    public RecordItemAdapter(List<Long> data, Context mContext) {
+    public HistoryItemAdapter(List<Long> data, Context mContext) {
         this.data = data;
         this.mContext = mContext;
     }

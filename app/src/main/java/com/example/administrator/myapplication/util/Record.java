@@ -20,6 +20,7 @@ public class Record implements Serializable {
         Date nowDate = new Date();
         date = nowDate.getTime();
         date_str = dateFormat.format(nowDate);
+        pointsList = new LinkedList<>();
         //四通道数据
         for (int i = 0; i < Config.channelNumber; i++) {
             pointsList.add(new LinkedList<Integer>());

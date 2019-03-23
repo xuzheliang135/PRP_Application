@@ -17,18 +17,18 @@ public class BeatImage {
     private int height;
     private int startIndex;
     private int showLength = 70;
-    private static final int signalMAX = 1200;
+
     private SQLUtil sqlUtil;
 
     public BeatImage(int width, int height, Context mContext) {
         this.height = height;
         this.width = width;
-        this.record = new Record();
         sqlUtil = new SQLUtil(mContext);
         init();
     }
 
     private void init() {
+        this.record = new Record();
         paths = new LinkedList<>();
         paints = new LinkedList<>();
         Paint back_paint = new Paint();
@@ -77,7 +77,7 @@ public class BeatImage {
     }
 
     private synchronized void onSizeChanged() {
-        showLength = width / 10;
+        showLength = width / Config.pointGap;
         updateBackPath();
         updateDataPath();
     }
@@ -125,7 +125,7 @@ public class BeatImage {
     }
 
     private synchronized void updateDataPath() {
-        paths.removeLast();
+        for (int i = 0; i < Config.channelNumber; i++) paths.removeLast();
         addDataPath();
     }
 
@@ -134,16 +134,18 @@ public class BeatImage {
         for (int i = 0; i < Config.channelNumber; i++) {
             LinkedList<Integer> points = record.getPoints(i);
             int zero_y = channelHeight / 2 + i * channelHeight;
-            Path d_path = new Path();
-            d_path.moveTo(0, zero_y);
+            Path dataPath = new Path();
+            dataPath.moveTo(0, zero_y);
             for (int j = 0; j < Math.min(points.size() - startIndex, showLength); j++) {
-                d_path.lineTo(j * 10, zero_y - (points.get(startIndex + j) * channelHeight / signalMAX));
+                int value = points.get(startIndex + j);
+                Config.signalMAX = Config.signalMAX > value ? Config.signalMAX : value;//todo use separate signalMax
+                dataPath.lineTo(j * Config.pointGap, zero_y - (value * channelHeight / 2 / Config.signalMAX));
             }
-            paths.add(d_path);
+            paths.add(dataPath);
         }
     }
 
-    synchronized void append(int[] value) {//todo: limit the value:to large value can break the drawing function
+    synchronized void append(int[] value) {//todo: limit the value:too large value can break the drawing function
         for (int i = 0; i < Config.channelNumber; i++) record.append_points(i, value[i]);
         if (record.getPoints(0).size() > showLength) startIndex += 1;
         Log.d("my_debug", "recordSize" + record.getPoints(0).size());

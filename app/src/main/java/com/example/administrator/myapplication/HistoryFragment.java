@@ -17,29 +17,30 @@ import java.util.Objects;
 
 public class HistoryFragment extends Fragment implements AdapterView.OnItemClickListener {
     private Context mContext;
-    private RecordItemAdapter mAdapter;
-    private LinkedList<Long> mData;
+    private HistoryItemAdapter historyItemAdapter;
+    private LinkedList<Long> items;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fg_history, container, false);
         ListView list = view.findViewById(R.id.list_record);
         mContext = view.getContext();
-        mData = new SQLUtil(mContext).get_date_list();
-        mAdapter = new RecordItemAdapter(mData, mContext);
-        list.setAdapter(mAdapter);
+        items = new SQLUtil(mContext).get_date_list();
+        historyItemAdapter = new HistoryItemAdapter(items, mContext);
+        list.setAdapter(historyItemAdapter);
         list.setOnItemClickListener(this);
         return view;
     }
 
     void refreshList() {
-        mAdapter.setData(new SQLUtil(mContext).get_date_list());
+        items = new SQLUtil(mContext).get_date_list();
+        historyItemAdapter.setData(items);
     }
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent start_intent = new Intent();
         start_intent.setClass(Objects.requireNonNull(getActivity()).getApplicationContext(), HistoryActivity.class);
-        start_intent.putExtra("date", mData.get(position));
+        start_intent.putExtra("date", items.get(position));
         startActivity(start_intent);
     }
 }

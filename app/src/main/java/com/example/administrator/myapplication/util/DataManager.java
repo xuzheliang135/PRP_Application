@@ -1,5 +1,7 @@
 package com.example.administrator.myapplication.util;
 
+import com.example.administrator.myapplication.Config;
+
 import java.util.LinkedList;
 
 public class DataManager {
@@ -19,7 +21,7 @@ public class DataManager {
                 int count = 0;
                 while (true) {
                     DataFrame frame = getOneFrame();
-                    if (count++ > 10 && frame != null) {
+                    if (count++ > Config.skipFrame && frame != null) {
                         frames.add(frame);
                         count = 0;
                     }

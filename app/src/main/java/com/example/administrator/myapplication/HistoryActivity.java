@@ -11,7 +11,7 @@ import com.example.administrator.myapplication.util.SQLUtil;
 
 public class HistoryActivity extends AppCompatActivity implements View.OnClickListener {
     long date;
-    Record record;
+    private Record record;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

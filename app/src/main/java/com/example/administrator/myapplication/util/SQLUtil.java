@@ -4,6 +4,9 @@ package com.example.administrator.myapplication.util;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
+import com.example.administrator.myapplication.Config;
 
 import java.util.LinkedList;
 
@@ -39,14 +42,11 @@ public class SQLUtil {
         data.setDate(date);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         for (int i = 0; i < 4; i++) {
-            Cursor c = db.rawQuery("select y,position from points where date=" + date + "&ch=" + i, null);
-            if (c.getCount() > 0) {
-                while (c.moveToNext()) {
-                    // 将点加入记录
-                    data.getPoints(i).add(c.getInt(c.getColumnIndex("position")), c.getInt(c.getColumnIndex("y")));
-                }
-                c.close();
-            }
+            Cursor c = db.rawQuery("select y from points where date=" + date + " and ch=" + i + " order by position ASC", null);
+            if (c.getCount() > 0)
+                while (c.moveToNext())
+                    data.getPoints(i).add(c.getInt(c.getColumnIndex("y")));// 将点加入记录
+            c.close();
         }
         return data;
     }
@@ -76,8 +76,8 @@ public class SQLUtil {
         Cursor cursor = db.rawQuery("select distinct date from points order by date desc", null);
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
-                long Date = cursor.getLong(cursor.getColumnIndex("date"));
-                record_list.add(Date);
+                long date = cursor.getLong(cursor.getColumnIndex("date"));
+                record_list.add(date);
             }
         }
         cursor.close();
@@ -86,14 +86,25 @@ public class SQLUtil {
 
     //从Record写入数据库
     void record(Record record) {
+        long date = record.getDate();
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String sql = "insert into points(date,ch,y,position) values(?,?,?,?)";
-        for (int k = 0; k < 4; k++) {
-            for (int j = 0; j < record.getPoints(k).size(); j++) {
-                Object[] obj = {record.getDate(), k, record.getPoints(k).get(j), j};
-                db.execSQL(sql, obj);
+        SQLiteStatement stat = db.compileStatement(sql);
+        db.beginTransaction();
+        for (int k = 0; k < Config.channelNumber; k++) {
+            LinkedList<Integer> points = record.getPoints(k);
+            int position = 0;
+            for (int value : points) {
+                stat.bindLong(1, date);
+                stat.bindLong(2, k);
+                stat.bindLong(3, value);
+                stat.bindLong(4, position++);
+                if (stat.executeInsert() < 0) Log.d("my_debug", "save error!");
             }
         }
-//        db.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+        Log.d("my_debug", "save completed!");
     }
 }

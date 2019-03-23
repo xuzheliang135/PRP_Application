@@ -93,7 +93,7 @@ public class BluetoothReceiver extends BroadcastReceiver {
         }
     }
 
-    public void connect() {
+    public void connect() {//todo simplify the connect
         try {
             btSocket = btSocket.getRemoteDevice().createRfcommSocketToServiceRecord(MY_UUID);
             btSocket.connect();
