@@ -7,7 +7,10 @@ import android.graphics.Path;
 import android.util.Log;
 import com.example.administrator.myapplication.Config;
 
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
+
 
 public class BeatImage {
     private volatile LinkedList<Path> paths;
@@ -132,14 +135,23 @@ public class BeatImage {
     private synchronized void addDataPath() {
         final int channelHeight = height / Config.channelNumber;
         for (int i = 0; i < Config.channelNumber; i++) {
+            int signalMAX;
+            List<Integer> subPoints = new LinkedList<>();
             LinkedList<Integer> points = record.getPoints(i);
+            int realShowLength = Math.min(points.size() - startIndex, showLength);
+            if (realShowLength > 0) subPoints = points.subList(startIndex, startIndex + realShowLength);
+            if (realShowLength > 0) {
+                signalMAX = Math.max(Math.abs(Collections.max(subPoints)), Math.abs(Collections.min(subPoints)));
+                signalMAX = Math.max(Config.leastSignalMax, signalMAX);
+            } else {
+                signalMAX = 100;
+            }
             int zero_y = channelHeight / 2 + i * channelHeight;
             Path dataPath = new Path();
             dataPath.moveTo(0, zero_y);
-            for (int j = 0; j < Math.min(points.size() - startIndex, showLength); j++) {
-                int value = points.get(startIndex + j);
-                Config.signalMAX = Config.signalMAX > value ? Config.signalMAX : value;//todo use separate signalMax
-                dataPath.lineTo(j * Config.pointGap, zero_y - (value * channelHeight / 2 / Config.signalMAX));
+            for (int j = 0; j < realShowLength; j++) {
+                int value = subPoints.get(j);
+                dataPath.lineTo(j * Config.pointGap, zero_y - (value * channelHeight / 2 / signalMAX));
             }
             paths.add(dataPath);
         }
