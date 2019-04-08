@@ -7,7 +7,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.Toast;
+import com.example.administrator.myapplication.BeatFragment;
 import com.example.administrator.myapplication.BeatView;
 import com.example.administrator.myapplication.Config;
 
@@ -22,13 +24,15 @@ public class BluetoothReceiver extends BroadcastReceiver {
     private BluetoothSocket btSocket;
     private DataManager dataManager = new DataManager();//todo:refactor DataManager as a factory
     private BeatImage beatImage;
+    private Button controlButton;
     private boolean isRunning = false;
 
     private byte[] start_command = new byte[]{Integer.valueOf(0xA0).byteValue(), 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, Integer.valueOf(0xA6).byteValue()};
     private byte[] end_command = new byte[]{Integer.valueOf(0xA0).byteValue(), 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, Integer.valueOf(0xA7).byteValue()};
 
-    public BluetoothReceiver(BeatView beatView) {
+    public BluetoothReceiver(BeatView beatView, BeatFragment beatFragment) {
         this.beatImage = beatView.getModel();
+        controlButton = beatFragment.controlButton;
     }
 
     private synchronized boolean isRunning() {
@@ -88,17 +92,6 @@ public class BluetoothReceiver extends BroadcastReceiver {
             btSocket = device.createRfcommSocketToServiceRecord(MY_UUID);
             btSocket.connect();
             startRecord();
-        } catch (IOException e) {
-            Log.d("my_debug", "error:" + e.getMessage());
-        }
-    }
-
-    public void connect() {//todo simplify the connect
-        try {
-            btSocket = btSocket.getRemoteDevice().createRfcommSocketToServiceRecord(MY_UUID);
-            btSocket.connect();
-            startRecord();
-            Log.d("my_debug", "." + btSocket.isConnected());
         } catch (IOException e) {
             Log.d("my_debug", "error:" + e.getMessage());
         }

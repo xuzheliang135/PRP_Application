@@ -34,7 +34,7 @@ public class BeatView extends View implements View.OnTouchListener {
     }
 
     private void init() {
-        beatImage = new BeatImage(100, 100, getContext());
+        beatImage = new BeatImage(100, 100, this);
         setOnTouchListener(this);
     }
 
@@ -52,7 +52,10 @@ public class BeatView extends View implements View.OnTouchListener {
         LinkedList<Path> paths = beatImage.getPaths();
         LinkedList<Paint> paints = beatImage.getPaints();
         for (int i = 0; i < Math.min(paints.size(), paths.size()); i++) {
-            canvas.drawPath(paths.get(i), paints.get(i));
+            try {
+                canvas.drawPath(paths.get(i), paints.get(i));
+            } catch (Exception ignore) {
+            }
         }
         super.onDraw(canvas);
         this.invalidate();

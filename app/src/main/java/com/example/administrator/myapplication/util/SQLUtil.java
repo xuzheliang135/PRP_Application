@@ -41,7 +41,7 @@ public class SQLUtil {
         Record data = new Record();
         data.setDate(date);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < Config.totalChannelNumber; i++) {
             Cursor c = db.rawQuery("select y from points where date=" + date + " and ch=" + i + " order by position ASC", null);
             if (c.getCount() > 0)
                 while (c.moveToNext())

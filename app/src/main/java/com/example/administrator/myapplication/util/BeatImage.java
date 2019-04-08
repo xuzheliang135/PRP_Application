@@ -1,10 +1,10 @@
 package com.example.administrator.myapplication.util;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.Log;
+import android.view.View;
 import com.example.administrator.myapplication.Config;
 
 import java.util.Collections;
@@ -20,13 +20,15 @@ public class BeatImage {
     private int height;
     private int startIndex;
     private int showLength = 70;
+    private View mView;
 
     private SQLUtil sqlUtil;
 
-    public BeatImage(int width, int height, Context mContext) {
+    public BeatImage(int width, int height, View mView) {
         this.height = height;
         this.width = width;
-        sqlUtil = new SQLUtil(mContext);
+        this.mView = mView;
+        sqlUtil = new SQLUtil(mView.getContext());
         init();
     }
 
@@ -60,7 +62,7 @@ public class BeatImage {
         sqlUtil.record(record);
     }
 
-    public LinkedList<Paint> getPaints() {
+    public synchronized LinkedList<Paint> getPaints() {
         return paints;
     }
 
@@ -158,7 +160,7 @@ public class BeatImage {
     }
 
     synchronized void append(int[] value) {//todo: limit the value:too large value can break the drawing function
-        for (int i = 0; i < Config.channelNumber; i++) record.append_points(i, value[i]);
+        for (int i = 0; i < Config.totalChannelNumber; i++) record.append_points(i, value[i]);
         if (record.getPoints(0).size() > showLength) startIndex += 1;
         Log.d("my_debug", "recordSize" + record.getPoints(0).size());
         updateDataPath();

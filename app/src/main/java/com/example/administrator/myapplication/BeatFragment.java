@@ -17,14 +17,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-
+import android.widget.Toast;
 import com.example.administrator.myapplication.util.BluetoothReceiver;
 
 /**
  * Created by Jay on 2015/8/28 0028.
  */
 public class BeatFragment extends Fragment implements View.OnClickListener {
-    private Button controlButton;
+    public Button controlButton;
     private Button chButton;
     private EditText editCh;
     private BluetoothReceiver bluetoothReceiver;
@@ -34,9 +34,9 @@ public class BeatFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fg_show_beats, container, false);
         controlButton = view.findViewById(R.id.controlButton);
-        chButton=view.findViewById(R.id.chButton);
-        editCh=view.findViewById(R.id.editCh);
-        bluetoothReceiver = new BluetoothReceiver((BeatView) view.findViewById(R.id.draw_content));
+        chButton = view.findViewById(R.id.chButton);
+        editCh = view.findViewById(R.id.editCh);
+        bluetoothReceiver = new BluetoothReceiver((BeatView) view.findViewById(R.id.draw_content), this);
         controlButton.setOnClickListener(this);
         chButton.setOnClickListener(this);
         createFilter();
@@ -72,21 +72,19 @@ public class BeatFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        //更改Config
-        if (v.getId()==R.id.chButton){
-            if(editCh.length()>0){
-                Config.channelNumber=Integer.parseInt(editCh.getText().toString());
+        //更改显示通道数
+        if (v.getId() == R.id.chButton) {
+            if (editCh.length() > 0) {
+                Config.channelNumber = Integer.parseInt(editCh.getText().toString());
+                Toast.makeText(this.getContext(), "显示通道数已变为" + Config.channelNumber, Toast.LENGTH_LONG).show();
+            }
         }
         if (v.getId() == R.id.controlButton) {
             if (controlButton.getText() == getResources().getString(R.string.start)) {
                 requestBluetooth();
                 ((BeatView) getView().findViewById(R.id.draw_content)).getModel().clearAll();
-                if (bluetoothReceiver.isConnected()) {
-                    bluetoothReceiver.connect();
-                } else {
-                    getActivity().registerReceiver(bluetoothReceiver, bluetoothFilter);
-                    startBluetoothDiscovery();
-                }
+                getActivity().registerReceiver(bluetoothReceiver, bluetoothFilter);
+                startBluetoothDiscovery();
                 controlButton.setText(R.string.terminate);
             } else if (controlButton.getText() == getResources().getString(R.string.terminate)) {
                 bluetoothReceiver.terminateRecord();
@@ -97,7 +95,6 @@ public class BeatFragment extends Fragment implements View.OnClickListener {
                 }
             }
         }
-    }
     }
 }
 
